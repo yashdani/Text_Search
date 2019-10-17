@@ -125,7 +125,6 @@ def cosine_similarity(relevant_docs, query_vector, idf_vector, tf_vector, proces
             score_final += query_vector[token] * (document_vector[doc][token] if token in document_vector[doc] else 0)
 
         for token in query_vector:
-            #            print(idf_vector[token]*(document_vector[doc][token] if token in document_vector[doc] else 0))
             score_tf_idf = query_vector[token] * (document_vector[doc][token] if token in document_vector[doc] else 0)
             #            print("token: ", token, "Score: ",score_idf)
             score_tf_idf_term[token] = score_tf_idf

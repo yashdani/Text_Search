@@ -14,12 +14,14 @@ def search():
     search_query = request.args.get('query','')
     print(search_query)
     import display
-    res=display.get_results(search_query)
+    res, highlight_query =display.get_results(search_query)
     print(res[0:5])
     print(type(res))
+
+
     #data = {'results': res}
     #data = jsonify(data)
-    return render_template('result.html',result=res)
+    return render_template('result.html',result=res[0:5] , highlight_q = highlight_query)
 
 if __name__ == '__main__':
 #    flask run
