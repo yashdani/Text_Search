@@ -17,11 +17,9 @@ def search():
     res, highlight_query =display.get_results(search_query)
     print(res[0:5])
     print(type(res))
-
-
     #data = {'results': res}
     #data = jsonify(data)
-    return render_template('result.html',result=res[0:5] , highlight_q = highlight_query)
+    return render_template('result.html',result=res , highlight_q = highlight_query)
 
 if __name__ == '__main__':
 #    flask run

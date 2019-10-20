@@ -4,10 +4,10 @@
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     </head>
     <body style="background-color: #f4f4f4;">
-        <img src="https://www.google.com/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwj1y76ahJrlAhVFmK0KHdIgAooQjRx6BAgBEAQ&url=%2Furl%3Fsa%3Di%26source%3Dimages%26cd%3D%26ved%3D%26url%3Dhttps%253A%252F%252Fwww.xplace.com%252Fu%252Fyanivtzadick%26psig%3DAOvVaw2rb0pGpKKKrFbwIMHmQWXh%26ust%3D1571083451894518&psig=AOvVaw2rb0pGpKKKrFbwIMHmQWXh&ust=1571083451894518" alt="image">
+        <!--<img src="https://www.google.com/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwj1y76ahJrlAhVFmK0KHdIgAooQjRx6BAgBEAQ&url=%2Furl%3Fsa%3Di%26source%3Dimages%26cd%3D%26ved%3D%26url%3Dhttps%253A%252F%252Fwww.xplace.com%252Fu%252Fyanivtzadick%26psig%3DAOvVaw2rb0pGpKKKrFbwIMHmQWXh%26ust%3D1571083451894518&psig=AOvVaw2rb0pGpKKKrFbwIMHmQWXh&ust=1571083451894518" alt="image">-->
 
 
-        <h1 style="font-family: 'Montserrat', sans-serif; text-shadow: 2px 2px 5px red;"><b>Search Results</b> <br><small class="text-muted">Using Tf-Idf</small></h1><br>
+        <h1 style="font-family: 'Montserrat', sans-serif; text-shadow: 2px 2px 5px red; left-margin: 30%"><b>Search Results</b> <br><small style="margin-left: 7%" class="text-muted">Using Tf-Idf</small></h1><br>
 {#            <table border="1">#}
 {#                <tr>#}
 {#                  <th>Title</th>#}
@@ -23,11 +23,13 @@
                 <ul type="none" class="list-group">
                     <li class="highlight list-group-item list-group-item-action list-group-item-danger"><b>Title:</b> {{i[0]}}</li>
                     <li class="highlight list-group-item list-group-item-action list-group-item-secondary"><b>Overview:</b> {{i[1]}}</li>
-                    <li class="highlight list-group-item list-group-item-action list-group-item-success"><b>Tf-idf Score:</b> {{i[2]}}</li>
-                    <li class="highlight list-group-item list-group-item-action list-group-item-success"><b>Tf-idf Score:</b> {{i[3]}}</li>
-                    <li class="highlight list-group-item list-group-item-action list-group-item-info"><b>Release Date:</b> {{i[4]}}</li>
-                    <li class="highlight list-group-item list-group-item-action list-group-item-info"><b>Release Date:</b> {{i[5]}}</li>
                     <li class="highlight list-group-item list-group-item-action list-group-item-info"><b>Release Date:</b> {{i[6]}}</li>
+                    {%for j in i[3]%}
+                    <li class="highlight list-group-item list-group-item-action list-group-item-success"><b>Idf Score of {{ j }}:</b> {{i[3][j]}}</li>
+                    <li class="highlight list-group-item list-group-item-action list-group-item-info"><b>TF Score of {{ j }}:</b> {{i[4][j]}}</li>
+                    <li class="highlight list-group-item list-group-item-action list-group-item-info"><b>TF-IDF Score of {{ j }}:</b> {{i[5][j]}}</li>
+                    {% endfor%}
+                    <li class="highlight list-group-item list-group-item-action list-group-item-success"><b>Tf-idf Score:</b> {{i[2]}}</li>
                 <br>
                 <br>
 
@@ -55,4 +57,3 @@
     </body>
 
 </html>
-
