@@ -14,9 +14,9 @@ def search():
     text_input = request.args.get('query','')
     print(text_input)
     import display
-    res, highlight_query =display.get_results(text_input)
-    print(res[0:5])
-    return render_template('display.html', result=res, highlight_q = highlight_query)
+    res, highlight_query = display.get_results(text_input)
+    print(res[0:10])
+    return render_template('display.html', result=res, highlight_q=highlight_query)
 
 if __name__ == '__main__':
 #    flask run

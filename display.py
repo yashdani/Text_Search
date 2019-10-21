@@ -177,19 +177,19 @@ def get_results(query):
     return eval_score(query)
 
 def initialize():
-    global data_folder, credits_cols, meta_cols, noise_list, credits_data, meta_data, N, tokenizer, stopword, stemmer, inverted_index, document_vector, lemmatizer
+    global csv_files, col_names, noise_list, credits_data, data_meta, N, tokenizer, stopword, stemmer, inverted_index, document_vector, lemmatizer
     
     # Data Fetch
-    data_folder = 'C:/Users/yashd/PycharmProjects/txt_search/'
-    #    meta_cols = {"id": None, "genres":['name'], "original_title":None, "overview":None,"release_date":None,
+    csv_files = 'C:/Users/yashd/PycharmProjects/txt_search/'
+    #    col_names = {"id": None, "genres":['name'], "original_title":None, "overview":None,"release_date":None,
     #                     "production_companies":['name'], "tagline":None}
-    meta_cols = {"id": None,"original_title": None, "overview": None, "release_date":None}
+    col_names = {"id": None,"original_title": None, "overview": None, "release_date":None}
     noise_list = ['(voice)', '(uncredited)']
 
-    meta_data = pd.read_csv(data_folder + 'movies_metadata.csv', usecols=meta_cols.keys(), index_col="id")
+    data_meta = pd.read_csv(csv_files + 'movies_metadata.csv', usecols=col_names.keys(), index_col="id")
     # Total number of documents = number of rows in movies_metadata.csv
-    meta_data = meta_data.dropna(subset = ["overview"])
-    N = meta_data.shape[0]
+    data_meta = data_meta.dropna(subset = ["overview"])
+    N = data_meta.shape[0]
 
     # Pre-processing initialization
     tokenizer = RegexpTokenizer(r'[a-zA-Z0-9]+')
@@ -205,7 +205,7 @@ def initialize():
 
 def build():
     print("Creating inverted index for meta data...")
-    create_inverted_index(meta_data, meta_cols)
+    create_inverted_index(data_meta, col_names)
     print("Building doc vector...")
     build_doc_vector()
     lemetized_data=stemmed_data = 10
@@ -235,7 +235,7 @@ def get_movie_info(sorted_score_list, tf_new, idf_new, tf_idf_new):
         doc_id = entry[0]
 #        print(type(doc_id))
 #        if type(doc_id) == str:
-        row = meta_data.loc[doc_id]
+        row = data_meta.loc[doc_id]
         info = (row["original_title"],
                 row["overview"] if isinstance(row["overview"], str) else "", entry[1], idf_new[doc_id], tf_new[doc_id], tf_idf_new[doc_id], row["release_date"])
 #        else:
