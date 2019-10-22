@@ -88,7 +88,7 @@
       <workItem from="1570684766803" duration="14242000" />
       <workItem from="1570744346639" duration="92000" />
       <workItem from="1570910129930" duration="34861000" />
-      <workItem from="1571528214028" duration="4458000" />
+      <workItem from="1571528214028" duration="7383000" />
     </task>
     <servers />
   </component>
@@ -112,6 +112,6 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/txt_search$txt_search.coverage" NAME="txt_search Coverage Results" MODIFIED="1571589080692" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/txt_search$txt_search.coverage" NAME="txt_search Coverage Results" MODIFIED="1571703651685" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

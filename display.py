@@ -6,7 +6,7 @@ from nltk.stem.porter import PorterStemmer
 from nltk.stem.wordnet import WordNetLemmatizer
 
 
-def create_inverted_index(x_data, x_cols):
+def create_index_inverted(x_data, x_cols):
     for row in x_data.itertuples():
         index = getattr(row, 'Index')
         data = []
@@ -42,31 +42,31 @@ def pre_processing(data_string):
 
 def insert(index, tokens):
     for token in tokens:
-        if token in inverted_index:
-            value = inverted_index[token]
+        if token in index_inverted:
+            value = index_inverted[token]
             if index in value.keys():
                 value[index] += 1
             else:
                 value[index] = 1
                 value["df"] += 1
         else:
-            inverted_index[token] = {index: 1, "df": 1}
+            index_inverted[token] = {index: 1, "df": 1}
     # stopwords_1()
 def build_doc_vector():
-    for token_key in inverted_index:
-        token_values = inverted_index[token_key]
+    for token_key in index_inverted:
+        token_values = index_inverted[token_key]
         idf = math.log10(N / token_values["df"])
         for doc_key in token_values:
             if doc_key != "df":
                 tf_idf = (1 + math.log10(token_values[doc_key])) * idf
-                if doc_key not in document_vector:
-                    document_vector[doc_key] = {token_key: tf_idf, "_sum_": math.pow(tf_idf, 2)}
+                if doc_key not in vector_doc:
+                    vector_doc[doc_key] = {token_key: tf_idf, "_sum_": math.pow(tf_idf, 2)}
                 else:
-                    document_vector[doc_key][token_key] = tf_idf
-                    document_vector[doc_key]["_sum_"] += math.pow(tf_idf, 2)
+                    vector_doc[doc_key][token_key] = tf_idf
+                    vector_doc[doc_key]["_sum_"] += math.pow(tf_idf, 2)
 
-    for doc in document_vector:
-        tf_idf_vector = document_vector[doc]
+    for doc in vector_doc:
+        tf_idf_vector = vector_doc[doc]
         normalize = math.sqrt(tf_idf_vector["_sum_"])
         for tf_idf_key in tf_idf_vector:
             tf_idf_vector[tf_idf_key] /= normalize
@@ -74,8 +74,8 @@ def build_doc_vector():
 def get_relevant_docs(query_list):
     relevant_docs = set()
     for query in query_list:
-        if query in inverted_index:
-            keys = inverted_index[query].keys()
+        if query in index_inverted:
+            keys = index_inverted[query].keys()
             for key in keys:
                 relevant_docs.add(key)
     if "df" in relevant_docs:
@@ -89,11 +89,11 @@ def build_query_vector(processed_query):
     idf_vector = {}
     sum = 0
     for token in processed_query:
-        if token in inverted_index:
-            # tf_idf = (1 + math.log10(processed_query.count(token))) * math.log10(N/inverted_index[token]["df"])
+        if token in index_inverted:
+            # tf_idf = (1 + math.log10(processed_query.count(token))) * math.log10(N/index_inverted[token]["df"])
             tf = (1 + math.log10(processed_query.count(token)))
             tf_vector[token] = tf
-            idf = (math.log10(N / inverted_index[token]["df"]))
+            idf = (math.log10(N / index_inverted[token]["df"]))
             idf_vector[token] = idf
             tf_idf = tf * idf
             query_vector[token] = tf_idf
@@ -106,7 +106,6 @@ def build_query_vector(processed_query):
     return query_vector, idf_vector, tf_vector
 
 def cosine_similarity(relevant_docs, query_vector, idf_vector, tf_vector, processed_query):
-    #    print("I am cosine similarity")
     score_map_final = {}
     score_map_idf = {}
     score_map_tf = {}
@@ -122,10 +121,10 @@ def cosine_similarity(relevant_docs, query_vector, idf_vector, tf_vector, proces
         score_tf = 0
         score_tf_idf = 0
         for token in query_vector:
-            score_final += query_vector[token] * (document_vector[doc][token] if token in document_vector[doc] else 0)
+            score_final += query_vector[token] * (vector_doc[doc][token] if token in vector_doc[doc] else 0)
 
         for token in query_vector:
-            score_tf_idf = query_vector[token] * (document_vector[doc][token] if token in document_vector[doc] else 0)
+            score_tf_idf = query_vector[token] * (vector_doc[doc][token] if token in vector_doc[doc] else 0)
             #            print("token: ", token, "Score: ",score_idf)
             score_tf_idf_term[token] = score_tf_idf
             score_tf_idf_term_keys = list(score_tf_idf_term.keys())
@@ -134,8 +133,8 @@ def cosine_similarity(relevant_docs, query_vector, idf_vector, tf_vector, proces
             final_score_tf_idf_term = list(zip(score_tf_idf_term_keys, score_tf_idf_term_values))
 
         for token in query_vector:
-            #            print(idf_vector[token]*(document_vector[doc][token] if token in document_vector[doc] else 0))
-            score_idf = idf_vector[token] * (document_vector[doc][token] if token in document_vector[doc] else 0)
+            #            print(idf_vector[token]*(vector_doc[doc][token] if token in vector_doc[doc] else 0))
+            score_idf = idf_vector[token] * (vector_doc[doc][token] if token in vector_doc[doc] else 0)
             #            print("token: ", token, "Score: ",score_idf)
             score_idf_term[token] = score_idf
             score_idf_term_keys = list(score_idf_term.keys())
@@ -145,7 +144,7 @@ def cosine_similarity(relevant_docs, query_vector, idf_vector, tf_vector, proces
 
         for token in tf_vector:
             #            print(tf_vector[token])
-            score_tf = tf_vector[token] * (document_vector[doc][token] if token in document_vector[doc] else 0)
+            score_tf = tf_vector[token] * (vector_doc[doc][token] if token in vector_doc[doc] else 0)
             #            score += (query_vector[token])
             score_tf_term[token] = score_tf
             score_tf_term_keys = list(score_tf_term.keys())
@@ -165,19 +164,19 @@ def cosine_similarity(relevant_docs, query_vector, idf_vector, tf_vector, proces
     return sorted_score_map_final[:50], tf_term_new, idf_term_new, tf_idf_term_new
 
 def get_results(query):
-    global inverted_index, document_vector
+    global index_inverted, vector_doc
     initialize()
     if os.path.isfile("invertedIndexPickle.pkl"):
-        inverted_index = pickle.load(open('invertedIndexPickle.pkl', 'rb'))
-        document_vector = pickle.load(open('documentVectorPickle.pkl', 'rb'))
+        index_inverted = pickle.load(open('invertedIndexPickle.pkl', 'rb'))
+        vector_doc = pickle.load(open('documentVectorPickle.pkl', 'rb'))
     else:
         print("In else of get_scores:")
         build()
-        save()
-    return eval_score(query)
+        store()
+    return evaluation(query)
 
 def initialize():
-    global csv_files, col_names, noise_list, credits_data, data_meta, N, tokenizer, stopword, stemmer, inverted_index, document_vector, lemmatizer
+    global csv_files, col_names, noise_list, credits_data, data_meta, N, tokenizer, stopword, stemmer, index_inverted, vector_doc, lemmatizer
     
     # Data Fetch
     csv_files = 'C:/Users/yashd/PycharmProjects/txt_search/'
@@ -200,24 +199,24 @@ def initialize():
     lemetized_data=stemmed_data = 10
     lemetized_data=lemetization(stemmed_data)
 
-    inverted_index = {}
-    document_vector = {}
+    index_inverted = {}
+    vector_doc = {}
 
 def build():
     print("Creating inverted index for meta data...")
-    create_inverted_index(data_meta, col_names)
+    create_index_inverted(data_meta, col_names)
     print("Building doc vector...")
     build_doc_vector()
     lemetized_data=stemmed_data = 10
     lemetized_data=lemetization(stemmed_data)
     print("Built index and doc vector")
 
-def save():
-    pickle.dump(inverted_index, open('invertedIndexPickle.pkl', 'wb+'))
-    pickle.dump(document_vector, open('documentVectorPickle.pkl', 'wb+'))
-    print("Saved both")
+def store():
+    pickle.dump(index_inverted, open('invertedIndexPickle.pkl', 'wb+'))
+    pickle.dump(vector_doc, open('documentVectorPickle.pkl', 'wb+'))
+    print("stored both")
 
-def eval_score(query):
+def evaluation(query):
     processed_query = pre_processing(query)
     relevant_docs = get_relevant_docs(processed_query)
     query_vector, idf_vector, tf_vector = build_query_vector(processed_query)

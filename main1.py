@@ -6,7 +6,7 @@ application = Flask(__name__)
 application.debug = True
 @application.route('/')
 def first():
-    print("First Page")
+    print("Index Page")
     return render_template('index.html')
 
 @application.route('/search/', methods=['GET', 'POST'])
