@@ -22,7 +22,6 @@ def create_index_inverted(x_data, x_cols):
                         continue
                     else:
                         for col_value in col_values:
-                            #                            print(col_value)
                             for param in parameters:
                                 data.append(col_value[param])
             insert(index, pre_processing(' '.join(data)))
@@ -101,20 +100,11 @@ def build_query_vector(processed_query):
     sum = math.sqrt(sum)
     for token in query_vector:
         query_vector[token] /= sum
-    # print(query_vector[token])
-    # print(token)
+
     return query_vector, idf_vector, tf_vector
 
 def cosine_similarity(relevant_docs, query_vector, idf_vector, tf_vector, processed_query):
-    score_map_final = {}
-    score_map_idf = {}
-    score_map_tf = {}
-    score_idf_term = {}
-    idf_term_new = {}
-    score_tf_term = {}
-    tf_term_new = {}
-    score_tf_idf_term = {}
-    tf_idf_term_new = {}
+    newTerm_TfIdf = {}
     for doc in relevant_docs:
         score_final = 0
         score_idf = 0
@@ -123,45 +113,48 @@ def cosine_similarity(relevant_docs, query_vector, idf_vector, tf_vector, proces
         for token in query_vector:
             score_final += query_vector[token] * (vector_doc[doc][token] if token in vector_doc[doc] else 0)
 
+        TfScore = {}
+        score_tf_idf_term = {}
         for token in query_vector:
             score_tf_idf = query_vector[token] * (vector_doc[doc][token] if token in vector_doc[doc] else 0)
-            #            print("token: ", token, "Score: ",score_idf)
             score_tf_idf_term[token] = score_tf_idf
             score_tf_idf_term_keys = list(score_tf_idf_term.keys())
             score_tf_idf_term_values = list(score_tf_idf_term.values())
 
             final_score_tf_idf_term = list(zip(score_tf_idf_term_keys, score_tf_idf_term_values))
 
+        FinalScore = {}
+        score_idf_term = {}
         for token in query_vector:
-            #            print(idf_vector[token]*(vector_doc[doc][token] if token in vector_doc[doc] else 0))
             score_idf = idf_vector[token] * (vector_doc[doc][token] if token in vector_doc[doc] else 0)
-            #            print("token: ", token, "Score: ",score_idf)
             score_idf_term[token] = score_idf
             score_idf_term_keys = list(score_idf_term.keys())
             score_idf_term_values = list(score_idf_term.values())
 
             final_score_idf_term = list(zip(score_idf_term_keys, score_idf_term_values))
 
+        IdfScore = {}
+        score_tf_term = {}
         for token in tf_vector:
-            #            print(tf_vector[token])
             score_tf = tf_vector[token] * (vector_doc[doc][token] if token in vector_doc[doc] else 0)
-            #            score += (query_vector[token])
             score_tf_term[token] = score_tf
             score_tf_term_keys = list(score_tf_term.keys())
             score_tf_term_values = list(score_tf_term.values())
 
             final_score_tf_term = list(zip(score_tf_term_keys, score_tf_term_values))
 
-        score_map_final[doc] = score_final
-        score_map_idf[doc] = score_idf
-        score_map_tf[doc] = score_tf
+        idf_term_new = {}
+        FinalScore[doc] = score_final
+        IdfScore[doc] = score_idf
+        TfScore[doc] = score_tf
 
+        tf_term_new = {}
         idf_term_new[doc] = final_score_idf_term
         tf_term_new[doc] = final_score_tf_term
-        tf_idf_term_new[doc] = final_score_tf_idf_term
-    sorted_score_map_final = sorted(score_map_final.items(), key=operator.itemgetter(1), reverse=True)
+        newTerm_TfIdf[doc] = final_score_tf_idf_term
+    sorted_FinalScore = sorted(FinalScore.items(), key=operator.itemgetter(1), reverse=True)
 
-    return sorted_score_map_final[:50], tf_term_new, idf_term_new, tf_idf_term_new
+    return sorted_FinalScore[:50], tf_term_new, idf_term_new, newTerm_TfIdf
 
 def get_results(query):
     global index_inverted, vector_doc
@@ -180,8 +173,6 @@ def initialize():
     
     # Data Fetch
     csv_files = 'C:/Users/yashd/PycharmProjects/txt_search/'
-    #    col_names = {"id": None, "genres":['name'], "original_title":None, "overview":None,"release_date":None,
-    #                     "production_companies":['name'], "tagline":None}
     col_names = {"id": None,"original_title": None, "overview": None, "release_date":None}
     noise_list = ['(voice)', '(uncredited)']
 
@@ -225,7 +216,6 @@ def evaluation(query):
     lemetized_data=stemmed_data = 10
     lemetized_data=lemetization(stemmed_data)
 
-    #print(search_result[0:5])
     return search_result, processed_query
 
 def get_movie_info(sorted_score_list, tf_new, idf_new, tf_idf_new):
@@ -233,15 +223,12 @@ def get_movie_info(sorted_score_list, tf_new, idf_new, tf_idf_new):
     for entry in sorted_score_list:
         doc_id = entry[0]
 #        print(type(doc_id))
-#        if type(doc_id) == str:
         row = data_meta.loc[doc_id]
         info = (row["original_title"],
                 row["overview"] if isinstance(row["overview"], str) else "", entry[1], idf_new[doc_id], tf_new[doc_id], tf_idf_new[doc_id], row["release_date"])
-#        else:
-#            continue
+
         result.append(info)
 
-#    print(result[0:5])
     new_score = None
     print(result[0:5])
     return result
