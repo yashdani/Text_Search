@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Classify</title>
+</head>
+<body>
+
+{%for i in result%}
+            <div style="width:80%; margin-left: 10%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  text-align: center;">
+                <ul type="none" class="list-group">
+                    <li class="highlight list-group-item list-group-item-action list-group-item-danger"><b>Genre:</b> {{i[0]}}</li>
+                    <li class="highlight list-group-item list-group-item-action list-group-item-secondary"><b>Score:</b> {{i[1]}}</li>
+{#                    <li class="highlight list-group-item list-group-item-action list-group-item-success"><b>Tf-idf Score:</b> {{i[2]}}</li>#}
+                <br>
+                <br>
+
+
+                </ul>
+            </div>
+                {% endfor%}
+
+</body>
+</html>

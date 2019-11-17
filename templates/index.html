@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <title>Movie Recommender System</title>
+    <title>MovieStation Application</title>
     <meta charset="utf-8"/>
     <style>
     table.steelBlueCols {
@@ -131,6 +131,11 @@ table.steelBlueCols tfoot .links a{
     <form method="GET" action="/search/">
         <label><h1>Insert Search Query:</h1> <input id="txtcu" type="text" name="query"/></label>
 	   <button id="butto" type="submit" value="submit">MovieStation Search</button>
+    </form>
+
+    <form method="GET" action="/classify/">
+        <label><h1>Insert Query to Classify:</h1> <input id="txtcu" type="text" name="query"/></label>
+	   <button id="butto" type="submit" value="submit">MovieStation Classify</button>
     </form>
 
     <!-- <p id="output">&nbsp;</p>

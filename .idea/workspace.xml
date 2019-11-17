@@ -2,8 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="28795226-7bd5-4c14-a6ef-ba721a4e46cb" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/classifierPicklePost.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classifierPicklePrior.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classify.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classify_query.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/display_classify.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tfidf.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/display.py" beforeDir="false" afterPath="$PROJECT_DIR$/display.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/display.py" beforeDir="false" afterPath="$PROJECT_DIR$/search_query.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main1.py" beforeDir="false" afterPath="$PROJECT_DIR$/main1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,6 +23,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Flask Main" />
+        <option value="HTML File" />
+        <option value="Python Script" />
       </list>
     </option>
   </component>
@@ -27,6 +37,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -90,7 +101,7 @@
       <workItem from="1571528214028" duration="7778000" />
       <workItem from="1573661056477" duration="108000" />
       <workItem from="1573661283280" duration="5043000" />
-      <workItem from="1573752251301" duration="2409000" />
+      <workItem from="1573752251301" duration="22381000" />
     </task>
     <servers />
   </component>
@@ -114,6 +125,6 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/txt_search$txt_search.coverage" NAME="txt_search Coverage Results" MODIFIED="1573754649962" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/txt_search$txt_search.coverage" NAME="txt_search Coverage Results" MODIFIED="1574019444567" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
